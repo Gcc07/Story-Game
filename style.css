@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Doto&display=swap');
 body {
     background-color: #000000;
     color: #5fcde4;
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Doto', bold;
+    font-weight: 900;
     margin: 0;
     padding: 0;
   }
@@ -21,7 +22,20 @@ h1 {
     margin: 30px 0;
     padding: 0;
 }
-
+#main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+#main #story_image {
+    width: 150%;
+    max-width: 300px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
 p {
     font-size: 1.0rem;
     line-height: 1.3;
@@ -31,3 +45,20 @@ p {
     margin: 30px auto;
     padding: 0 20px;
 }
+
+button {
+    display: block;
+    background-color: #5fcde4;
+    color: #000000;
+    font-family: 'Doto', cursive;
+    font-weight: 900;
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    margin: 30px auto;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
