@@ -17,14 +17,14 @@ class Scene {
 }
 
 function load_new_scene(loaded_scene) {
-    story_paragraph.innerHTML = loaded_scene.paragraph;
-    story_image.src = loaded_scene.image;
+    story_paragraph.innerHTML = loaded_scene.paragraph; // Sets the paragraph to the new scene's paragraph.
+    story_image.src = loaded_scene.image; // Sets the image to the new scene's image.
 
-    if (loaded_scene.gives_item) {
+    if (loaded_scene.gives_item) { // Gives item into has_item if the scene has an item.
         has_item[loaded_scene.gives_item] = true;
     }
 
-    for (let i = 0; i < loaded_scene.choice_buttons.length; i++) {
+    for (let i = 0; i < loaded_scene.choice_buttons.length; i++) { // Adds buttons to the main content when a new scene is instanced.
         var button = document.createElement('button');
         button.innerHTML = loaded_scene.choice_buttons[i].name;
         let button_choice = loaded_scene.choice_buttons[i];
@@ -36,7 +36,7 @@ function load_new_scene(loaded_scene) {
     }
 }
 
-function clear_buttons() {
+function clear_buttons() { // Removes all buttons from old scene when new scene is instanced.
     while (main_content.lastElementChild.tagName.toLowerCase() === 'button') {
         //console.log("removing button");
         main_content.removeChild(main_content.lastElementChild);
@@ -57,18 +57,16 @@ death = new Scene("Succumb to your fate. ", "You are unable to continue your exp
     "images/death.gif", []); // Creates a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
 
 ENDING_endless_light = new Scene("Where is everything.", "It is light. Impossibly bright. You reach where your visor is engulfed in the light of the second moon. You are lost. You are alone. You are out of energy. You cannot continue your travels. <br> Death. Your employer will not be pleased."
-    + "<br> ENDING 2: ENDLESS LIGHT",
+    + "<br> ENDING 1: ENDLESS LIGHT",
     "images/tmp.png", []);
 
 ENDING_endless_night = new Scene("Where is everything.", "It is dark. Impossibly dark. You reach where even the light of the eclipse cannot reach. You are lost. You are alone. You are out of energy. You cannot continue your travels. <br> Death. Your employer will not be pleased."
     + "<br> ENDING 2: ENDLESS NIGHT",
-    "images/tmp.png", []);
+    "images/endless_darkness.gif", []);
 
-ENDING_escape_the_eclipse = new Scene("Leave this planet.", "Use the core you obtained to power your ship. You are able to leave this planet. <br> Your employer will be pleased with the data you have gathered. <br> <br> ENDING 1: ESCAPE THE ECLIPSE", 
-    "images/crash.png", []); 
+ENDING_escape_the_eclipse = new Scene("Leave this planet.", "Use the core you obtained to power your ship. You are able to leave this planet. <br> Your employer will be pleased with the data you have gathered. <br> <br> ENDING 3: ESCAPE THE ECLIPSE", 
+    "images/leave.gif", []); 
         
-ENDING_stolen_property = new Scene("Accept your fate.", "Your body is no longer your own. <BR> <BR> ENDING 4: STOLEN PROPERTY",
-    "images/all_red.gif", []);
 ENDING_stolen_property = new Scene("Accept your fate.", "Your body is no longer your own. <BR> <BR> ENDING 4: STOLEN PROPERTY",
     "images/all_red.gif", []);
 
@@ -79,31 +77,31 @@ placeholder = new Scene("Placeholder Name.", "Placeholder Paragraph.",
 // Branch: Walk Endlessly, forget the Cerulean Eclipse: Darkness
 
 walk_endlessly_d4 = new Scene("Continue to move.", "You tread on endlessly. The dunes are endless. The weight of the sun and moon suppress your energy core unbearably.",
-    "images/tmp.png", [ENDING_endless_night]);
+    "images/mountains.png", [ENDING_endless_night]);
 
 walk_endlessly_d3 = new Scene("Continue to move.", "You drag on more. There are less Ceruelan Cereus here. You feel the weight of the eclipse on your energy core. You need to find a way to recharge quickly.",
-    "images/tmp.png", [walk_endlessly_d4]);
+    "images/mountains.png", [walk_endlessly_d4]);
 
 walk_endlessly_d2 = new Scene("Continue to move.", "You walk more.",
-    "images/tmp.png", [walk_endlessly_d3]);
+    "images/mountains.png", [walk_endlessly_d3]);
 
 walk_endlessly_d1 = new Scene("Continue to move.", "You walk.",
-    "images/tmp.png", [walk_endlessly_d2]);
+    "images/mountains.png", [walk_endlessly_d2]);
 
 
 // Branch: Walk Endlessly, embrace the Cerulean Eclipse: Second Moon
 
 walk_endlessly_l4 = new Scene("Continue to move.", "You tread on endlessly. The mountains are endless. The weight of the sun and moon suppress your energy core unbearably.",
-    "images/tmp.png", [ENDING_endless_light]);
+    "images/Dunes.gif", [ENDING_endless_light]);
 
 walk_endlessly_l3 = new Scene("Continue to move.", "You drag on more. There are more Ceruelan Cereus here. You feel the weight of the eclipse on your energy core. You need to find a way to recharge quickly.",
-    "images/tmp.png", [walk_endlessly_l4]);
+    "images/Dunes.gif", [walk_endlessly_l4]);
 
 walk_endlessly_l2 = new Scene("Continue to move.", "You walk more.",
-    "images/tmp.png", [walk_endlessly_l3]);
+    "images/Dunes.gif", [walk_endlessly_l3]);
 
 walk_endlessly_l1 = new Scene("Continue to move.", "You walk.",
-    "images/tmp.png", [walk_endlessly_l2]);
+    "images/Dunes.gif", [walk_endlessly_l2]);
 
 
 // Branch: Mountains
@@ -141,7 +139,7 @@ attack_him = new Scene("Attack him.", "You raise your weapon and fire. He convul
     "images/ShootWanderer.gif", [replace_your_own_core, ENDING_escape_the_eclipse], "WandererEnergyCore");
 
 help_him = new Scene("Help him", "You walk towards him, he looks at you as his helmet visor adjusts. You reach out to lend a helping hand, but he suddenly raises a hidden blaster. <br>Do you retaliate? <br>Or do you try to reason with him?",
-    "images/DSurvivor.gif", [placeholder]);
+    "images/WandererShootYou.png", [placeholder]);
 
 follow_energy_spike = new Scene("Follow the energy spike.", "You meet another wanderer. <br> It seems he is stranded as well. <br> Your scanners indicate his reactor core model is far more efficient than yours. <br>He is injured.<br><br>Steal his reactor core? <br><br>Or help him?",
     "images/DSurvivor.gif", [help_him, attack_him]); 
@@ -163,7 +161,7 @@ see_light = new Scene("Go to it.", "You walk closer and see it. It's a Cerulean 
     "images/blue.gif", [touch_it, dont_touch_it]); 
 
 avoid_light = new Scene("Avoid the light.", "You continue your travels. It's impossible to know what it could have been. It's best to avoid it. <br> You continue your travels.",
-    "images/dunes.gif", [walk_endlessly_d1]);
+    "images/dunes.gif", [walk_endlessly_l1]);
 
 leave_outpost= new Scene("Leave the outpost.", "You have nothing left to do here. You leave the outpost. <br>You see a light in the distance. It could be a settlement. Or distress signal. <br> Go and see it?", 
     "images/DunesLight.gif", [see_light, avoid_light]);
@@ -188,7 +186,5 @@ start_scene = new Scene("Begin your survival.", "You are an exploration android 
 
 load_new_scene(start_scene);
 
-// initial_button.addEventListener('click', function() {
-//     load_new_scene(Start);
-//     document.main.removeChild(initial_button);
-// });
+// Controls music (Credits to C418)
+// DIDN'T FINISH
