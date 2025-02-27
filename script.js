@@ -4,12 +4,15 @@ var story_paragraph = document.getElementById('story_paragraph');
 var story_image = document.getElementById('story_image');
 var initial_button = document.getElementById('initial_button');
 
+var has_item = {Gun: false, ShipEnergyCore: false};
+
 class Scene {
-    constructor(name, paragraph, image, choice_buttons) {
+    constructor(name, paragraph, image, choice_buttons, gives_item) {
         this.name = name;
         this.paragraph = paragraph;
         this.image = image;
         this.choice_buttons = choice_buttons;
+        this.gives_item = gives_item || null;
     }
 }
 
@@ -35,6 +38,10 @@ function load_new_scene(loaded_scene) {
     story_paragraph.innerHTML = loaded_scene.paragraph;
     story_image.src = loaded_scene.image;
 
+    if (loaded_scene.gives_item) {
+        has_item[loaded_scene.gives_item] = true;
+    }
+
     for (let i = 0; i < loaded_scene.choice_buttons.length; i++) {
         var button = document.createElement('button');
         button.innerHTML = loaded_scene.choice_buttons[i].name;
@@ -49,72 +56,123 @@ function load_new_scene(loaded_scene) {
 
 function clear_buttons() {
     while (main_content.lastElementChild.tagName.toLowerCase() === 'button') {
-        console.log("removing button");
+        //console.log("removing button");
         main_content.removeChild(main_content.lastElementChild);
     }
 }
 
-// Ending Scenes
-death = new Scene("Succumb to your fate. ", "The Cerulean Eclipse has sapped you of your energy. You are unable to continue your exploration. Your employer will not be pleased.", 
-    "images/death.gif", []); // Create a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
-placeholder = new Scene("Placeholder Name.", "Placeholder Paragraph.", 
-    "images/crash.png", [death]); // Create a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
-    
 // Initialize all scene variables
 
 
+
+// Ending Scenes
+death = new Scene("Succumb to your fate. ", "You are unable to continue your exploration. Your employer will not be pleased.", 
+    "images/death.gif", []); // Creates a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
+
+ENDING_endless_light = new Scene("Where is everything.", "It is light. Impossibly bright. You reach where your visor is engulfed in the light of the second moon. You are lost. You are alone. You are out of energy. You cannot continue your travels. <br> Death. Your employer will not be pleased.",
+    "images/tmp.png", []);
+
+ENDING_endless_night = new Scene("Where is everything.", "It is dark. Impossibly dark. You reach where even the light of the eclipse cannot reach. You are lost. You are alone. You are out of energy. You cannot continue your travels. <br> Death. Your employer will not be pleased.",
+    "images/tmp.png", []);
+
+placeholder = new Scene("Placeholder Name.", "Placeholder Paragraph.", 
+    "images/crash.png", [death]); 
+    
+
+// Branch: Walk Endlessly, forget the Cerulean Eclipse: Darkness
+
+walk_endlessly_d4 = new Scene("Continue to move.", "You tread on endlessly. The dunes are endless. The weight of the sun and moon suppress your energy core unbearably.",
+    "images/tmp.png", [ENDING_endless_night]);
+
+walk_endlessly_d3 = new Scene("Continue to move.", "You drag on more. There are less Ceruelan Cereus here. You feel the weight of the eclipse on your energy core. You need to find a way to recharge quickly.",
+    "images/tmp.png", [walk_endlessly_d4]);
+
+walk_endlessly_d2 = new Scene("Continue to move.", "You walk more.",
+    "images/tmp.png", [walk_endlessly_d3]);
+
+walk_endlessly_d1 = new Scene("Continue to move.", "You walk.",
+    "images/tmp.png", [walk_endlessly_d2]);
+
+
+// Branch: Walk Endlessly, embrace the Cerulean Eclipse: Second Moon
+
+walk_endlessly_l4 = new Scene("Continue to move.", "You tread on endlessly. The mountains are endless. The weight of the sun and moon suppress your energy core unbearably.",
+    "images/tmp.png", [ENDING_endless_light]);
+
+walk_endlessly_l3 = new Scene("Continue to move.", "You drag on more. There are more Ceruelan Cereus here. You feel the weight of the eclipse on your energy core. You need to find a way to recharge quickly.",
+    "images/tmp.png", [walk_endlessly_l4]);
+
+walk_endlessly_l2 = new Scene("Continue to move.", "You walk more.",
+    "images/tmp.png", [walk_endlessly_l3]);
+
+walk_endlessly_l1 = new Scene("Continue to move.", "You walk.",
+    "images/tmp.png", [walk_endlessly_l2]);
+
 // Branch: Mountains
 
-derelect_ship = new Scene("Derelict Ship", "You need anything you can find. It's best to search it.", 
-    "images/crash.png", [death]); // Create a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
 
-mountains_continue1 = new Scene("Search for civilization", "You continue your travels. It's too dangerous to scavenge. Perhaps you can find a settlement.", 
-    "images/mountains.png", [placeholder]); 
 
-mountains = new Scene("Go towards the Night Mountains", "You could lose your way in the dunes. The Cereus succulents have an annoying blue glow to them.", 
-    "images/mountains.png", [mountains_continue1]); 
+go_back_to_ship = new Scene("Go back to the ship.", "You return to the ship.",
+    "images/crash.png", []); // Create a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
+
+leave_ship_energy_core = new Scene("Leave the energy core.", "You leave the energy core. It was perfectly functional and you left it. Something in your programming is off.",
+    "images/crash.png", [walk_endlessly_d1]);
+
+take_ship_energy_core = new Scene("Take the energy core.", "You take the energy core. It is still functional, and could at least send you back into orbit.",
+    "images/crash.png", [go_back_to_ship], "ShipEnergyCore"); // Create a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
+
+derelect_ship = new Scene("Scavenge the Derelict Ship", "You need anything you can find. It's best to search it. <b> You find a rusted energy core nestled within the ship. It is still functional, and could at least send you back into orbit.", 
+    "images/crash.png", [take_ship_energy_core]); // Create a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
+
+mountains_continue1 = new Scene("Move elsewhere to find civilization", "You continue your travels. It's too dangerous to scavenge. Perhaps you can find a settlement if you search elsewhere..", 
+    "images/mountains.png", [walk_endlessly_d1]); 
+
+mountains = new Scene("Go towards the Night Mountains", "You could lose your way in the dunes. The Ceruelan Cereus have an annoying blue glow to them. <br> You see a crashed ship in the distance. Maybe you could find something useful there.", 
+    "images/mountains.png", [mountains_continue1, derelect_ship]); 
+
+
+// Branch: Find the survivor
+
+follow_energy_spike = new Scene("Follow the energy spike.", "You meet another wanderer. <br> It seems he is stranded as well. <br> Your scanners indicate his reactor core model is far more efficient than yours. <br>He is injured.<br><br>Steal his reactor core? <br><br>Or help him?",
+    "images/blue.gif", [placeholder]); 
+
 
 // Branch: Dunes
-walk_endlessly4 = new Scene("Where is everything.", "It is dark. Impossibly dark. You reach where even the light of the eclipse cannot reach. You are lost. You are alone. You are out of energy. You cannot continue your travels.",
-    "images/tmp.png", [placeholder]);
+wander_towards_moon = new Scene("Wander towards the moon.", "Whatever that signal was it wasn't worth it too you. You tread on.",
+    "images/blue.gif", [walk_endlessly_l1]); 
 
-walk_endlessly4 = new Scene("Continue to move.", "You tread on endlessly. The dunes are endless. The weight of the sun and moon suppress your energy core unbearably.",
-    "images/tmp.png", [placeholder]);
+touch_it = new Scene("Touch it.", "You reach out to touch it. It feels different from the other bioluminescent fauna. You feel a surge of energy. You feel stronger. <br> The weight of the eclipse is lifted from your energy core. You can continue your travels just a little longer."
+    + "<br><br> After a moment passes your scanner indicates a faint energy spike away from the light. <br> You could follow it. <br> Or you could tread towards the light.",
+    "images/blue.gif", [follow_energy_spike, wander_towards_moon]); 
 
-walk_endlessly3 = new Scene("Continue to move.", "You drag on more. There are less Cereus succulents here. You feel the weight of the eclipse on your energy core. You need to find a way to recharge quickly.",
-    "images/tmp.png", [walk_endlessly4]);
+dont_touch_it = new Scene("Don't touch it.", "It could be a trick of the eclipse. You don't want to risk it. <br> You continue your travels.",
+    "images/blue.gif", [walk_endlessly_d1]); 
 
-walk_endlessly2 = new Scene("Continue to move.", "You walk more.",
-    "images/tmp.png", [walk_endlessly3]);
-
-walk_endlessly1 = new Scene("Continue to move.", "You walk.",
-    "images/tmp.png", [walk_endlessly2]);
+see_light = new Scene("Go to it.", "You walk closer and see it. It's a Cerulean Cereus... But it's different. It radiates a deep blue glow, calmer than the others?",
+    "images/blue.gif", [touch_it, dont_touch_it]); 
 
 avoid_light = new Scene("Avoid the light.", "You continue your travels. It's impossible to know what it could have been. It's best to avoid it. <br> You continue your travels.",
-    "images/tmp.png", [walk_endlessly1]);
+    "images/dunes.gif", [walk_endlessly_d1]);
 
-touch_it = new Scene("Touch it.", "You reach out to touch it. It feels different from the other bioluminescent fauna. You feel a surge of energy. You feel stronger. <br> The weight of the eclipse is lifted from your energy core. You can continue your travels just a little longer.",
-    "images/tmp.png", [placeholder]); 
+leave_outpost= new Scene("Leave the outpost.", "You have nothing left to do here. You leave the outpost. <br>You see a light in the distance. It could be a settlement. Or distress signal. <br> Go and see it?", 
+    "images/DunesLight.gif", [see_light, avoid_light]);
 
-see_light = new Scene("Go to it.", "You walk closer and see it. It's a Cereus succulent. It has a deep blue glow, calmer than the others. What is different about this one?",
-    "images/tmp.png", [touch_it, avoid_light]); 
+leave_gun = new Scene("Leave it.", "You won't be needing that. You aren't a model designed for violence. You were commissioned for the purpose of retrieving data. <br> There is nothing left to do here.", 
+    "images/outpost.png", [leave_outpost]);
 
-leave_outpost= new Scene("Leave the outpost.", "You have nothing left to do here. You leave the outpost. You see a light in the distance. It could be a settlement.", 
-    "images/tmp.png", [see_light, avoid_light]);
+take_gun = new Scene("Take it.", "Its a company-issued 4025-D Stun-Model Six Shooter. Hardly lethal to inorganic beings, but it will cause immobility for some time. This could come in handy. Who knows what you'll find out here.", 
+    "images/gun_taken.png", [leave_outpost], "Gun");
 
-leave_gun = new Scene("Leave it.", "You won't be needing that. You continue on your way.", 
-    "images/tmp.png", [leave_outpost]);
+dunes_outpost = new Scene("Explore the Outpost.", "After a frustratingly long trek you walk in cautiously. It's empty, aside from a dilapidated scanner machine, and broken repair tools. <br> Amongst the trash you find a Stun-Model Six Shooter. <br> It still has a charge - Pick it up?", 
+    "images/outpost.png", [take_gun, leave_gun]);
 
-take_gun = new Scene("Take it.", "This could come in handy. Who knows what you'll find out here.", 
-    "images/tmp.png", [leave_outpost]);
+avoid_outpost = new Scene("Avoid the outpost.", "No need to search. You shouldn't trust something so easy to find. <br>You see a light in the distance. It could be a settlement. Or distress signal. <br> Go and see it?",
+    "images/DunesLight.gif", [see_light, avoid_light]);
 
-dunes_outpost = new Scene("Explore the Outpost.", "You walk in cautiously. It's empty. You find a Stun Six Shooter. Pick it up?", 
-    "images/tmp.png", [take_gun, leave_gun]);
+dunes = new Scene("Continue on the Blue Cereus Dunes", "It's best to follow the dunes. The mountains are too dangerous. <br> This planet is enshrouded under an endless  blue eclipse, surrounded by glowing, blue succulents, what are known to the Contractor Company as 'cacti'. Your scanners call them 'Cerulean Cereus'. <br> You see a small outpost in the distance. Maybe you can find something useful there.", 
+    "images/dunes.gif", [dunes_outpost, avoid_outpost]); 
 
-dunes = new Scene("Continue on the Blue Cereus Dunes", "It's best to follow the dunes. The mountains are too dangerous. <br> You see a small outpost in the distance. Maybe you can find something useful there.", 
-    "images/dunes.gif", [dunes_outpost]); 
-
-start_scene = new Scene("Begin your survival.", "You are an exploration android model sent by an employer to survey planets. After your ship's reactor core fails upon enterting this planets atmosphere, you just barely avoid a total crash landing. This planet is enshrouded under an endless  blue eclipse, with limited energy reserves. Both you and the ship are running out of time. Your energy core depletes under the influence of the cold night.", 
+start_scene = new Scene("Begin your survival.", "You are an exploration android model sent by an employer to survey planets. After your ship's reactor core fails upon entering this planets atmosphere, you just barely avoid a total crash landing. With limited energy reserves, both you and the ship are running out of time. Your energy core depletes under the influence of the cold night.", 
     "images/cerulean_moon.gif", [mountains, dunes]); // Create a new scene with the constructor. Paragraph info, image, and the choices are passed in as arguments.
 
 load_new_scene(start_scene);
