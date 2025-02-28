@@ -141,7 +141,7 @@ attack_him = new Scene("Attack him.", "You raise your weapon and fire. He convul
     + "<br>You could take a chance and go back to your ship, his core might be able to power it on. <br> Or you could replace your own core with his. You are almost out of energy, after all.",
     "images/ShootWanderer.gif", [replace_your_own_core, ENDING_escape_the_eclipse], "WandererEnergyCore");
 
-reason = new Scene("Retaliate.", "You try to reason, but he is too fast. He fires at you. You are unable to continue your exploration. Your employer will not be pleased.",
+reason = new Scene("Reason.", "You try to reason, but he is too fast. He fires at you. You are unable to continue your exploration. Your employer will not be pleased.",
     "images/death.gif", [ENDING_defeated_in_combat]);
 
 retaliate = new Scene("Retaliate.", "You try to retaliate, but he is too fast. He fires at you. You are unable to continue your exploration. Your employer will not be pleased.",
