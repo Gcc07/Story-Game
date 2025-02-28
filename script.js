@@ -70,6 +70,9 @@ ENDING_escape_the_eclipse = new Scene("Leave this planet.", "Use the core you ob
 ENDING_stolen_property = new Scene("Accept your fate.", "Your body is no longer your own. <BR> <BR> ENDING 4: STOLEN PROPERTY",
     "images/all_red.gif", []);
 
+ENDING_defeated_in_combat = new Scene("Accept your fate.", "You've got got. <BR> <BR> ENDING 5: DEFEATED IN COMBAT",
+    "images/death.gif", []);
+
 placeholder = new Scene("Placeholder Name.", "Placeholder Paragraph.", 
     "images/crash.png", [death]); 
     
@@ -138,8 +141,14 @@ attack_him = new Scene("Attack him.", "You raise your weapon and fire. He convul
     + "<br>You could take a chance and go back to your ship, his core might be able to power it on. <br> Or you could replace your own core with his. You are almost out of energy, after all.",
     "images/ShootWanderer.gif", [replace_your_own_core, ENDING_escape_the_eclipse], "WandererEnergyCore");
 
+reason = new Scene("Retaliate.", "You try to reason, but he is too fast. He fires at you. You are unable to continue your exploration. Your employer will not be pleased.",
+    "images/death.gif", [ENDING_defeated_in_combat]);
+
+retaliate = new Scene("Retaliate.", "You try to retaliate, but he is too fast. He fires at you. You are unable to continue your exploration. Your employer will not be pleased.",
+    "images/death.gif", [ENDING_defeated_in_combat]);
+
 help_him = new Scene("Help him", "You walk towards him, he looks at you as his helmet visor adjusts. You reach out to lend a helping hand, but he suddenly raises a hidden blaster. <br>Do you retaliate? <br>Or do you try to reason with him?",
-    "images/WandererShootYou.png", [placeholder]);
+    "images/WandererShootYou.png", [retaliate, reason]);
 
 follow_energy_spike = new Scene("Follow the energy spike.", "You meet another wanderer. <br> It seems he is stranded as well. <br> Your scanners indicate his reactor core model is far more efficient than yours. <br>He is injured.<br><br>Steal his reactor core? <br><br>Or help him?",
     "images/DSurvivor.gif", [help_him, attack_him]); 
