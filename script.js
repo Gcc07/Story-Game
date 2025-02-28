@@ -58,7 +58,7 @@ death = new Scene("Succumb to your fate. ", "You are unable to continue your exp
 
 ENDING_endless_light = new Scene("Where is everything.", "It is light. Impossibly bright. You reach where your visor is engulfed in the light of the second moon. You are lost. You are alone. You are out of energy. You cannot continue your travels. <br> Death. Your employer will not be pleased."
     + "<br> ENDING 1: ENDLESS LIGHT",
-    "images/tmp.png", []);
+    "images/bright.png", []);
 
 ENDING_endless_night = new Scene("Where is everything.", "It is dark. Impossibly dark. You reach where even the light of the eclipse cannot reach. You are lost. You are alone. You are out of energy. You cannot continue your travels. <br> Death. Your employer will not be pleased."
     + "<br> ENDING 2: ENDLESS NIGHT",
